@@ -1,8 +1,29 @@
 CREATE TABLE papers (
-	DOI INTEGER   NOT NULL,
+	DOI VARCHAR(10)   NOT NULL,
 	JID VARCHAR(10),
 	CONSTRAINT paperspk PRIMARY KEY (DOI),
 	CONSTRAINT paper_journalFk  FOREIGN KEY (JID) REFERENCES journals(JID)
+);
+
+CREATE TABLE paper_author (
+	DOI VARCHAR(10) NOT NULL,
+	AID INT NOT NULL,
+	CONSTRAINT paper_authorpk PRIMARY KEY (DOI,AID),
+	CONSTRAINT paper_author_paperFk FOREIGN KEY REFERENCES papers(DOI),
+	CONSTRAINT paper_author_authorFk FOREIGN KEY REFERENCES authors(AID)
+);
+
+CREATE TABLE affiliations (
+	DOI VARCHAR(10) NOT NULL,
+	AID INT NOT NULL,
+	aff_name VARCHAR(100),
+	CONSTRAINT affiliations_paperFk FOREIGN KEY REFERENCES papers(DOI),
+	CONSTRAINT affiliations_authorFk FOREIGN KEY REFERENCES authors(AID)
+);
+
+CREATE TABLE authors (
+	AID INT NOT NULL,
+	CONSTRAINT authorspk PRIMARY KEY (AID)
 );
 
 CREATE TABLE journals (
@@ -10,3 +31,4 @@ CREATE TABLE journals (
 	economicativity_id_cnae INT NOT NULL,
 	CONSTRAINT journalspk PRIMARY KEY (JID)
 );
+
