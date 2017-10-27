@@ -6,6 +6,7 @@ path = 'raw_data/aps-dataset-metadata-2016'
 big_table = []
 journals = [j for j in os.listdir(path+'/') if '.' not in j]
 for journal in journals:
+    print journal
     volumes = [v for v in os.listdir(path+'/'+journal) if '.' not in v]
     for volume in volumes:
         papers = [p for p in os.listdir(path+'/'+journal+'/'+volume) if '.json' in p]
