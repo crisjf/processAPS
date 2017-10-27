@@ -14,14 +14,15 @@ for journal in journals:
             pdata = codecs.open(filename,encoding='utf-8').read()
             pdata = json.loads(pdata)
             doi = pdata['identifiers']['doi']
-            for a in pdata['authors']:
-                a = defaultdict(lambda:'NULL',a)
-                if 'affiliations' in pdata.keys():
-                    affs = defaultdict(lambda:'NULL',dict([(af['id'],af['name']) for af in pdata['affiliations']]))
-                    for af in a[u'affiliationIds']:
-                        big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),affs[af]))
-                else:
-                    big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),'NULL'))
+            if 'authors' in pdata.keys():
+                for a in pdata['authors']:
+                    a = defaultdict(lambda:'NULL',a)
+                    if 'affiliations' in pdata.keys():
+                        affs = defaultdict(lambda:'NULL',dict([(af['id'],af['name']) for af in pdata['affiliations']]))
+                        for af in a[u'affiliationIds']:
+                            big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),affs[af]))
+                    else:
+                        big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),'NULL'))
 
 big_table = pd.DataFrame(big_table,columns=['DOI','firstname','surname','name','person','af_name'])
 
