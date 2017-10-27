@@ -16,9 +16,13 @@ for journal in journals:
             doi = pdata['identifiers']['doi']
             for a in pdata['authors']:
                 a = defaultdict(lambda:'NULL',a)
-                affs = dict([(af['id'],af['name']) for af in pdata['affiliations']])
-                for af in a[u'affiliationIds']:
-                    big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),affs[af]))
+                if 'affiliations' in pdata.keys():
+                    affs = dict([(af['id'],af['name']) for af in pdata['affiliations']])
+                    for af in a[u'affiliationIds']:
+                        big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),affs[af]))
+                else:
+                    big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),'NULL'))
+
 big_table = pd.DataFrame(big_table,columns=['DOI','firstname','surname','name','person','af_name'])
 
 paper_author = big_table[['DOI','firstname','surname','name','person']].drop_duplicates()
