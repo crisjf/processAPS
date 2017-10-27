@@ -1,5 +1,5 @@
 from collections import defaultdict
-import pandas as pd,codecs,json
+import pandas as pd,codecs,json,os
 
 path = 'raw_data/aps-dataset-metadata-2016'
 
