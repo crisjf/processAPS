@@ -17,7 +17,7 @@ for journal in journals:
             for a in pdata['authors']:
                 a = defaultdict(lambda:'NULL',a)
                 if 'affiliations' in pdata.keys():
-                    affs = dict([(af['id'],af['name']) for af in pdata['affiliations']])
+                    affs = defaultdict(lambda:'NULL',dict([(af['id'],af['name']) for af in pdata['affiliations']]))
                     for af in a[u'affiliationIds']:
                         big_table.append((doi,a['firstname'],a['surname'],a['name'],(a['type'].lower().strip()=='person'),affs[af]))
                 else:
