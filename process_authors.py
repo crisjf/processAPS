@@ -14,7 +14,8 @@ for journal in journals:
             filename = path+'/'+journal+'/'+volume+'/'+paper
             pdata = codecs.open(filename,encoding='utf-8').read()
             pdata = json.loads(pdata)
-            doi = pdata['identifiers']['doi']
+            # doi = pdata['identifiers']['doi']
+            doi = pdata['id']
             if 'authors' in pdata.keys():
                 for a in pdata['authors']:
                     a = defaultdict(lambda:'NULL',a)
