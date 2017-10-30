@@ -105,4 +105,8 @@ COPY INTO disciplines FROM '/data/APS/processAPS/processed_data/disciplines_db.c
 COPY INTO paper_discipline FROM '/data/APS/processAPS/processed_data/paper_discipline_db.csv';
 
 CREATE INDEX papers_jid_idx ON papers (JID);
+CREATE INDEX papers_doi_idx ON papers (DOI);
+CREATE INDEX authors_aid_idx ON authors (AID);
+CREATE INDEX paper_author_aid_idx ON paper_author (AID);
+CREATE INDEX paper_author_doi_idx ON paper_author (DOI);
 CREATE INDEX citations_idx ON citations (DOI_cited);

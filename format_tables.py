@@ -18,14 +18,16 @@ for col in ['firstname','surname','name']:
 	authors[col] = authors[col].str.replace('|',';')
 paper_author = paper_author[['DOI','AID']].fillna('NULL')
 affiliations = affiliations[['DOI','AID','af_name']].fillna('NULL')
+affiliations['af_name'] = affiliations['af_name'].str.replace('|',';')
 journal_data = journal_data[['JID','jname','jabbrev']].fillna('NULL')
 papers_out = papers_out[['DOI','JID','date','year','month','title','volume','issue','numpages']].fillna('NULL')
 papers_out['title'] = papers_out['title'].str.replace('|',';')
 papers_out['numpages'] = papers_out['numpages'].astype(str)
 papers_out.loc[papers_out['numpages']==' ','numpages'] = 'NULL'
 papers_out.loc[papers_out['numpages']=='','numpages'] = 'NULL'
-subjectareas = subjectareas[['sa_id','sa_label']].fillna('NULL')
-paper_subjectarea = paper_subjectarea[['DOI','sa_id']].fillna('NULL')
+subjectareas = subjectareas[['sa_id','sa_label']].dropna()
+paper_subjectarea = paper_subjectarea[['DOI','sa_id']].dropna()
+paper_subjectarea = paper_subjectarea[paper_subjectarea['sa_id'].isin(set(subjectareas['sa_id']))]
 concepts = concepts[['c_id','c_label']].fillna('NULL')
 paper_concept = paper_concept[['DOI','c_id']].fillna('NULL')
 disciplines = disciplines[['d_id','d_label']].fillna('NULL')
