@@ -14,6 +14,8 @@ paper_discipline = pd.read_csv('processed_data/paper_discipline.csv',encoding='u
 citations = pd.read_csv('raw_data/aps-dataset-citations-2016/aps-dataset-citations-2016.csv',encoding='utf-8')
 
 authors = authors[['AID','firstname','surname','name','person']].fillna('NULL')
+for col in ['firstname','surname','name']:
+	authors[col] = authors[col].str.replace('|',';')
 paper_author = paper_author[['DOI','AID']].fillna('NULL')
 affiliations = affiliations[['DOI','AID','af_name']].fillna('NULL')
 journal_data = journal_data[['JID','jname','jabbrev']].fillna('NULL')
