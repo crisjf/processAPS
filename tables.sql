@@ -1,3 +1,10 @@
+CREATE TABLE journals (
+	JID VARCHAR(10) NOT NULL,
+	jname VARCHAR(60),
+	jabbrevname VARCHAR(30),
+	CONSTRAINT journalspk PRIMARY KEY (JID)
+);
+
 CREATE TABLE papers (
 	DOI VARCHAR(40)   NOT NULL,
 	JID VARCHAR(10),
@@ -12,13 +19,21 @@ CREATE TABLE papers (
 	CONSTRAINT paper_journalFk  FOREIGN KEY (JID) REFERENCES journals(JID)
 );
 
-
 CREATE TABLE citations (
-	DOI_s VARCHAR(40) NOT NULL,
-	DOI_t VARCHAR(10) NOT NULL,
-	CONSTRAINT citationspk PRIMARY KEY (DOI_s,DOI_t),
-	CONSTRAINT citations_sFk FOREIGN KEY (DOI_s) REFERENCES papers(DOI),
-	CONSTRAINT citations_tFk FOREIGN KEY (DOI_t) REFERENCES papers(DOI)
+	DOI_citing VARCHAR(40) NOT NULL,
+	DOI_cited VARCHAR(10) NOT NULL,
+	CONSTRAINT citationspk PRIMARY KEY (DOI_citing,DOI_cited),
+	CONSTRAINT citations_sFk FOREIGN KEY (DOI_citing) REFERENCES papers(DOI),
+	CONSTRAINT citations_tFk FOREIGN KEY (DOI_cited) REFERENCES papers(DOI)
+);
+
+CREATE TABLE authors (
+	AID INT NOT NULL,
+	first_name VARCHAR(40),
+	surname VARCHAR(120),
+	name VARCHAR(150),
+	is_person boolean,
+	CONSTRAINT authorspk PRIMARY KEY (AID)
 );
 
 CREATE TABLE paper_author (
@@ -35,22 +50,6 @@ CREATE TABLE affiliations (
 	aff_name VARCHAR(800),
 	CONSTRAINT affiliations_paperFk FOREIGN KEY (DOI) REFERENCES papers(DOI),
 	CONSTRAINT affiliations_authorFk FOREIGN KEY (AID) REFERENCES authors(AID)
-);
-
-CREATE TABLE authors (
-	AID INT NOT NULL,
-	first_name VARCHAR(40),
-	surname VARCHAR(120),
-	name VARCHAR(150),
-	is_person boolean,
-	CONSTRAINT authorspk PRIMARY KEY (AID)
-);
-
-CREATE TABLE journals (
-	JID VARCHAR(10) NOT NULL,
-	jname VARCHAR(60),
-	jabbrevname VARCHAR(30),
-	CONSTRAINT journalspk PRIMARY KEY (JID)
 );
 
 CREATE TABLE subjectareas (
@@ -85,9 +84,22 @@ CREATE TABLE disciplines (
 	CONSTRAINT disciplinespk PRIMARY KEY (d_id)
 );
 
-CREATE TABLE discipline_concept (
+CREATE TABLE paper_discipline (
 	DOI VARCHAR(40)   NOT NULL,
 	d_id VARCHAR(40) NOT NULL,
 	CONSTRAINT discipline_paperFk FOREIGN KEY (DOI) REFERENCES papers(DOI),
 	CONSTRAINT discipline_disciplineFk FOREIGN KEY (d_id) REFERENCES disciplines(d_id)
 );
+
+COPY INTO journals FROM '/data/APS/processAPS/processed_data/journals_db.csv';
+COPY INTO papers FROM '/data/APS/processAPS/processed_data/papers_out_db.csv';
+COPY INTO citations FROM '/data/APS/processAPS/processed_data/citations_db.csv';
+COPY INTO authors FROM '/data/APS/processAPS/processed_data/authors_db.csv';
+COPY INTO paper_author FROM '/data/APS/processAPS/processed_data/paper_author_db.csv';
+COPY INTO affiliations FROM '/data/APS/processAPS/processed_data/affiliations_db.csv';
+COPY INTO subjectareas FROM '/data/APS/processAPS/processed_data/subjectareas_db.csv';
+COPY INTO paper_subjectarea FROM '/data/APS/processAPS/processed_data/paper_subjectarea_db.csv';
+COPY INTO concepts FROM '/data/APS/processAPS/processed_data/concepts_db.csv';
+COPY INTO paper_concept FROM '/data/APS/processAPS/processed_data/paper_concept_db.csv';
+COPY INTO disciplines FROM '/data/APS/processAPS/processed_data/disciplines_db.csv';
+COPY INTO paper_discipline FROM '/data/APS/processAPS/processed_data/paper_discipline_db.csv';

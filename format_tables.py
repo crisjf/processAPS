@@ -11,6 +11,7 @@ concepts = pd.read_csv('processed_data/concepts.csv',encoding='utf-8')
 paper_concept = pd.read_csv('processed_data/paper_concept.csv',encoding='utf-8')
 disciplines = pd.read_csv('processed_data/disciplines.csv',encoding='utf-8')
 paper_discipline = pd.read_csv('processed_data/paper_discipline.csv',encoding='utf-8')
+citations = pd.read_csv('raw_data/aps-dataset-citations-2016/aps-dataset-citations-2016.csv',encoding='utf-8')
 
 authors = authors[['AID','firstname','surname','name','person']]
 paper_author = paper_author[['DOI','AID']]
@@ -23,6 +24,8 @@ concepts = concepts[['c_id','c_label']]
 paper_concept = paper_concept[['DOI','c_id']]
 disciplines = disciplines[['d_id','d_label']]
 paper_discipline = paper_discipline[['DOI','d_id']]
+citations = citations[['citing_doi','cited_doi']]
+
 
 authors.to_csv('processed_data/authors_db.csv',index=False,encoding='utf-8',sep='|',header=False)
 paper_author.to_csv('processed_data/paper_author_db.csv',index=False,encoding='utf-8',sep='|',header=False)
@@ -35,3 +38,4 @@ concepts.to_csv('processed_data/concepts_db.csv',index=False,encoding='utf-8',se
 paper_concept.to_csv('processed_data/paper_concept_db.csv',index=False,encoding='utf-8',sep='|',header=False)
 disciplines.to_csv('processed_data/disciplines_db.csv',index=False,encoding='utf-8',sep='|',header=False)
 paper_discipline.to_csv('processed_data/paper_discipline_db.csv',index=False,encoding='utf-8',sep='|',header=False)
+citations.to_csv('processed_data/citations_db.csv',index=False,encoding='utf-8',sep='|',header=False)
