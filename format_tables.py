@@ -13,19 +13,25 @@ disciplines = pd.read_csv('processed_data/disciplines.csv',encoding='utf-8')
 paper_discipline = pd.read_csv('processed_data/paper_discipline.csv',encoding='utf-8')
 citations = pd.read_csv('raw_data/aps-dataset-citations-2016/aps-dataset-citations-2016.csv',encoding='utf-8')
 
-authors = authors[['AID','firstname','surname','name','person']]
-paper_author = paper_author[['DOI','AID']]
-affiliations = affiliations[['DOI','AID','af_name']]
-journal_data = journal_data[['JID','jname','jabbrev']]
-papers_out = papers_out[['DOI','JID','date','year','month','title','volume','issue','numpages']]
-subjectareas = subjectareas[['sa_id','sa_label']]
-paper_subjectarea = paper_subjectarea[['DOI','sa_id']]
-concepts = concepts[['c_id','c_label']]
-paper_concept = paper_concept[['DOI','c_id']]
-disciplines = disciplines[['d_id','d_label']]
-paper_discipline = paper_discipline[['DOI','d_id']]
-citations = citations[['citing_doi','cited_doi']]
+authors = authors[['AID','firstname','surname','name','person']].fillna('NULL')
+paper_author = paper_author[['DOI','AID']].fillna('NULL')
+affiliations = affiliations[['DOI','AID','af_name']].fillna('NULL')
+journal_data = journal_data[['JID','jname','jabbrev']].fillna('NULL')
+papers_out = papers_out[['DOI','JID','date','year','month','title','volume','issue','numpages']].fillna('NULL')
+papers_out['title'] = papers_out['title'].str.replace('|',';')
+papers_out['numpages'] = papers_out['numpages'].astype(str)
+papers_out.loc[papers_out['numpages']==' ','numpages'] = 'NULL'
+papers_out.loc[papers_out['numpages']=='','numpages'] = 'NULL'
+subjectareas = subjectareas[['sa_id','sa_label']].fillna('NULL')
+paper_subjectarea = paper_subjectarea[['DOI','sa_id']].fillna('NULL')
+concepts = concepts[['c_id','c_label']].fillna('NULL')
+paper_concept = paper_concept[['DOI','c_id']].fillna('NULL')
+disciplines = disciplines[['d_id','d_label']].fillna('NULL')
+paper_discipline = paper_discipline[['DOI','d_id']].fillna('NULL')
+citations = citations[['citing_doi','cited_doi']].dropna().drop_duplicates()
 
+dois = set(papers_out['DOI'])
+citations = citations[(citations['citing_doi'].isin(dois))&(citations['cited_doi'].isin(dois))]
 
 authors.to_csv('processed_data/authors_db.csv',index=False,encoding='utf-8',sep='|',header=False)
 paper_author.to_csv('processed_data/paper_author_db.csv',index=False,encoding='utf-8',sep='|',header=False)

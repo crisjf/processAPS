@@ -21,7 +21,7 @@ CREATE TABLE papers (
 
 CREATE TABLE citations (
 	DOI_citing VARCHAR(40) NOT NULL,
-	DOI_cited VARCHAR(10) NOT NULL,
+	DOI_cited VARCHAR(40) NOT NULL,
 	CONSTRAINT citationspk PRIMARY KEY (DOI_citing,DOI_cited),
 	CONSTRAINT citations_sFk FOREIGN KEY (DOI_citing) REFERENCES papers(DOI),
 	CONSTRAINT citations_tFk FOREIGN KEY (DOI_cited) REFERENCES papers(DOI)
@@ -103,3 +103,6 @@ COPY INTO concepts FROM '/data/APS/processAPS/processed_data/concepts_db.csv';
 COPY INTO paper_concept FROM '/data/APS/processAPS/processed_data/paper_concept_db.csv';
 COPY INTO disciplines FROM '/data/APS/processAPS/processed_data/disciplines_db.csv';
 COPY INTO paper_discipline FROM '/data/APS/processAPS/processed_data/paper_discipline_db.csv';
+
+CREATE INDEX papers_jid_idx ON papers (JID);
+CREATE INDEX citations_idx ON citations (DOI_cited);
