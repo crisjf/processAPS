@@ -7,10 +7,9 @@ sa = []
 cc = []
 dd = []
 journals = [j for j in os.listdir(path+'/') if '.' not in j]
-for journal in journals[1:]:
-    journal='PRAPPLIED'
+for journal in journals:
     volumes = [v for v in os.listdir(path+'/'+journal) if '.' not in v]
-    for volume in volumes[::-1]:
+    for volume in volumes:
         papers = [p for p in os.listdir(path+'/'+journal+'/'+volume) if '.json' in p]
         for paper in papers:
             filename = path+'/'+journal+'/'+volume+'/'+paper
@@ -43,9 +42,6 @@ for journal in journals[1:]:
                         pass
             except:
                 pass
-            
-        break
-    break
 sa = pd.DataFrame(sa,columns=['DOI','sa_id','sa_label'])
 subjectareas = sa[['sa_id','sa_label']].drop_duplicates()
 paper_subjectarea = sa[['DOI','sa_id']].drop_duplicates()
